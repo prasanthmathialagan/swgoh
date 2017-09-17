@@ -158,6 +158,21 @@ function parseCollection($) {
     })
         .get();
 }
+
+function parseToonInfo($) {
+    return $("body > div.container.p-t-sm > div.content-container > div.content-container-primary-aside > ul > li.media.list-group-item.p-sm > div.media-body > div.media-body > div.pc-stat")
+        .map(function (x) {
+            var _$ = $(this);
+            var stat = _$.find("span.pc-stat-label").text();
+            var value = _$.find("span.pc-stat-value").text();
+            return {
+                stat: stat,
+                value: value,
+            };
+    })
+        .get();
+}
+
 function parseProfile($) {
     return __assign({}, parseInfo($), parseStats($), parseUser($));
 }
@@ -238,6 +253,10 @@ var Swgoh = /** @class */ (function () {
     Swgoh.prototype.collection = function (username) {
         var uri = url.resolve(swgohgg, "/u/" + username + "/collection");
         return this.getCheerio(uri).then(parseCollection);
+    };
+    Swgoh.prototype.toon = function (username, toon_code) {
+        var uri = url.resolve(swgohgg, "/u/" + username + "/collection/" + toon_code);
+        return this.getCheerio(uri).then(parseToonInfo);
     };
     Swgoh.prototype.guild = function (opts) {
         var uri;
